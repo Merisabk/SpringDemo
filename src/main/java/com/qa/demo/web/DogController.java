@@ -3,6 +3,8 @@ package com.qa.demo.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,39 +24,42 @@ public class DogController {
 	private List<Dog> ListOfDogs = new ArrayList<>();
 
 	// CRUD functionality
+	//ResponseEntity is an extension of HttpEntity that represents an HTTP response including status code, headers and body. 
 
 	// CREATE
-	@PostMapping("/create")
-	public Dog createDog(@RequestBody Dog d) {
+	@PostMapping("/create") // 201 - created
+	public ResponseEntity<Dog> createDog(@RequestBody Dog d) {
 		this.ListOfDogs.add(d);
 		Dog created = this.ListOfDogs.get(this.ListOfDogs.size() - 1);
-		return created;
+		ResponseEntity<Dog> response = new ResponseEntity<Dog>(created, HttpStatus.CREATED);
+		return response;
 	}
 
 	// READ ALL
-	@GetMapping("/getAll")
-	public List<Dog> getAllListOfDogs() {
-		return this.ListOfDogs;
+	@GetMapping("/getAll") // 200 - OK
+	public ResponseEntity<List<Dog>> getAllListOfDogs() {
+		return ResponseEntity.ok(this.ListOfDogs);
 	}
 
 //READ one
-	@GetMapping("/get/{id}")
+	@GetMapping("/get/{id}") // 200 -OK
 	public Dog getDog(@PathVariable Integer id) {
 		return this.ListOfDogs.get(id);
 	}
 
 // UPDATE 
-	@PutMapping("/replace/{id}")
-	public Dog replaceDog(@PathVariable Integer id, @RequestBody Dog newDog) {
+	@PutMapping("/replace/{id}") // 202 - Accepted
+	public ResponseEntity<Dog> replaceDog(@PathVariable Integer id, @RequestBody Dog newDog) {
 		Dog body = this.ListOfDogs.set(id, newDog);
-		return body;
-
+		ResponseEntity<Dog> response = new ResponseEntity<Dog>(body, HttpStatus.ACCEPTED);
+		return response;
 	}
 
 //DELETE 
-	@DeleteMapping("/remove/{id}")
-	public void removeDog(@PathVariable Integer id) {
+	@DeleteMapping("/remove/{id}") // 204 - No content 
+	public ResponseEntity<?> removeDog(@PathVariable Integer id) {
 		this.ListOfDogs.remove(id.intValue());
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
 
