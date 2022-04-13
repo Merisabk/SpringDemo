@@ -37,7 +37,7 @@ public class DogController {
 	// CREATE
 	@PostMapping("/create") // 201 - created
 	public ResponseEntity<Dog> createDog(@RequestBody Dog d) {
-		Dog created = this.service.createDog(d);
+		Dog created = this.service.create(d);
 		ResponseEntity<Dog> response = new ResponseEntity<Dog>(created, HttpStatus.CREATED);
 		return response;
 	}
@@ -45,19 +45,19 @@ public class DogController {
 	// READ ALL
 	@GetMapping("/getAll") // 200 - OK
 	public ResponseEntity<List<Dog>> getAllListOfDogs() {
-		return ResponseEntity.ok(this.service.getAllDogs());
+		return ResponseEntity.ok(this.service.getAll());
 	}
 
 //READ one
 	@GetMapping("/get/{id}") // 200 -OK
 	public Dog getDog(@PathVariable Integer id) {
-		return this.service.getDog(id);
+		return this.service.getOne(id);
 	}
 
 // UPDATE 
 	@PutMapping("/replace/{id}") // 202 - Accepted
 	public ResponseEntity<Dog> replaceDog(@PathVariable Integer id, @RequestBody Dog newDog) {
-		Dog body = this.service.replaceDog(id, newDog);
+		Dog body = this.service.replace(id, newDog);
 		ResponseEntity<Dog> response = new ResponseEntity<Dog>(body, HttpStatus.ACCEPTED);
 		return response;
 	}
@@ -65,7 +65,7 @@ public class DogController {
 //DELETE 
 	@DeleteMapping("/remove/{id}") // 204 - No content 
 	public ResponseEntity<?> removeDog(@PathVariable Integer id) {
-		this.service.removeDog(id);
+		this.service.remove(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

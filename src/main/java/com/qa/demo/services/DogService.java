@@ -12,7 +12,7 @@ import com.qa.demo.domain.Dog;
 import com.qa.demo.repo.DogRepo;
 
 @Service 
-public class DogService {
+public class DogService implements ServiceInterface<Dog> {
 
 	private DogRepo repo;
 	
@@ -24,24 +24,24 @@ public class DogService {
 
 	// CRUD 
 	// INSERT INTO Dog
-	public Dog createDog(Dog d) {
+	public Dog create(Dog d) {
 		Dog created = this.repo.save(d);
 		return created;
 	}
 	
 	// SELECT * FROM Dog
-	public List<Dog> getAllDogs() {
+	public List<Dog> getAll() {
 		return this.repo.findAll();
 	}
 	
 	// SELECT * FROM Dog WHERE ID = ? 
-	public Dog getDog(Integer id) {
+	public Dog getOne(Integer id) {
 		Optional<Dog> found = this.repo.findById(id);
 		return found.get();
 	}
 	
 	// UPDATE
-	public Dog replaceDog (Integer id, Dog newD) {
+	public Dog replace(Integer id, Dog newD) {
 		Dog existing = this.repo.findById(id).get();
 		existing.setAge(newD.getAge());
 		existing.setName(newD.getName());
@@ -51,7 +51,7 @@ public class DogService {
 	}
 	
 	// DELETE FROM DOG WHERE ID = ?
-	public void removeDog(@PathVariable Integer id) {
+	public void remove(@PathVariable Integer id) {
 		this.repo.deleteById(id);
 	}
 	
